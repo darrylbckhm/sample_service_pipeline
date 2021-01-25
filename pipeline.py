@@ -9,7 +9,7 @@ from aws_cdk import aws_ecs as ecs
 from .webapp import WebApp
 
 
-class SampleServicePipeline(Stack):
+class SampleServicePipeline(core.Construct):
     """
     A construct that defines the deployment
     pipeline and CICD configurations.
@@ -53,14 +53,14 @@ class SampleServicePipeline(Stack):
         secret_token = (
             core
             .SecretValue
-            .secrets_manager('/fargate_cicd_staging/dev/GITHUB_TOKEN')
+            .secrets_manager('/sample_service_pipeline_staging/dev/GITHUB_TOKEN')
         )
         repo = (
             ssm
             .StringParameter
             .value_for_string_parameter(
                 self,
-                '/fargate_cicd_staging/dev/GITHUB_REPO'
+                '/sample_service_pipeline_staging/dev/GITHUB_REPO'
             )
         )
         owner = (
@@ -68,7 +68,7 @@ class SampleServicePipeline(Stack):
             .StringParameter
             .value_for_string_parameter(
                 self,
-                '/fargate_cicd_staging/dev/GITHUB_OWNER'
+                '/sample_service_pipeline_staging/dev/GITHUB_OWNER'
             )
         )
         github_action = codepipeline_actions.GitHubSourceAction(
